@@ -41,6 +41,7 @@ var (
 	intermediatesList []string
 	module            string
 	path              string
+	dirsExclude       []string
 	dry               bool
 	list              bool
 	cfgFile           string
@@ -98,6 +99,8 @@ var rootCmd = &cobra.Command{
 			go func() {
 				defer wg.Done()
 
+				excludedDirs := util.ExcludedDirsRegExp(dirsExclude)
+
 				err := filepath.Walk(path,
 					func(path string, f os.FileInfo, err error) error {
 						if err != nil {
@@ -107,6 +110,10 @@ var rootCmd = &cobra.Command{
 							return filepath.SkipDir
 						}
 						if util.IsGoFile(f) {
+							dirPath := filepath.Dir(path)
+							if util.IsExcluded(filepath.ToSlash(dirPath), excludedDirs) {
+								return nil
+							}
 							klog.V(2).Infof("Queueing %s", path)
 							files <- path
 						}
@@ -142,6 +149,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aimports.yaml)")
 
 	rootCmd.Flags().StringVarP(&path, "path", "p", "", "The path to the go module to organize. Defaults to the current directory.")
+	rootCmd.Flags().StringArrayVar(&dirsExclude, "exclude_dir", []string{}, "Exclude folder from organize.")
 	rootCmd.Flags().StringArrayVarP(&intermediatesList, "intermediate", "i", []string{}, "Names of go modules to put between openshift and module to organize. Example usage: -i github.com/thirdy/one -i thirdy.io/two")
 	rootCmd.Flags().StringVarP(&module, "module", "m", "", "The name of the go module. Example: github.com/example-org/example-repo")
 	rootCmd.Flags().BoolVarP(&list, "list", "l", false, "List files whose imports are not sorted without making changes")
