@@ -1,5 +1,8 @@
 
 # aimports
+
+This is a fork of @openshift-eng's [openshift-goimports](https://github.com/openshift-eng/openshift-goimports). I'll be maintaining this version for my own use.
+
 Organizes Go imports according to OpenShift best practices
 
 * [Summary](#summary)
@@ -69,6 +72,7 @@ Flags:
   -l, --list                             List files whose imports are not sorted without making changes
   -m, --module string                    The name of the go module. Example: github.com/example-org/example-repo (optional)
   -p, --path string                      The path to the go module to organize. Defaults to the current directory. (default ".") (optional)
+      --exclude_dir stringArray          Exclude folder from organize. (optional)
   -d, --dry                              Dry run only, do not actually make any changes to files
   -v, --v Level                          number for the log level verbosity
 ```
@@ -96,6 +100,9 @@ $ aimports
 
 # Basic usage with command executed in provided directory
 $ aimports --module github.com/example-org/example-repo --path ~/go/src/example-org/example-repo
+
+# Basic usage with command executed can be excluded directory
+$ aimports --exclude_dir=pkg/imports --exclude_dir=pkg/util
 ```
 
 ### <a name='Examplehacktools.gofile'></a>Example hack/tools.go file
