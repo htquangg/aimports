@@ -24,7 +24,7 @@ vendor: ## Vendor dependencies. Example: make vendor
 .PHONY: vendor
 
 clean: ## Clean up the workspace. Example: make clean
-	rm -f openshift-goimports
+	rm -f aimports
 .PHONY: clean
 
 help: ## Print this help. Example: make help

@@ -1,4 +1,4 @@
-module github.com/openshift-eng/openshift-goimports
+module github.com/htquangg/aimports
 
 go 1.18
 

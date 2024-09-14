@@ -33,8 +33,8 @@ import (
 
 	klog "k8s.io/klog/v2"
 
-	"github.com/openshift-eng/openshift-goimports/pkg/imports"
-	"github.com/openshift-eng/openshift-goimports/pkg/util"
+	"github.com/htquangg/aimports/pkg/imports"
+	"github.com/htquangg/aimports/pkg/util"
 )
 
 var (
@@ -52,7 +52,7 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "openshift-goimports",
+	Use:   "aimports",
 	Short: "Organize go imports according to OpenShift best practices.",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -139,7 +139,7 @@ func init() {
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	cobra.OnInitialize()
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.openshift-goimports.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aimports.yaml)")
 
 	rootCmd.Flags().StringVarP(&path, "path", "p", "", "The path to the go module to organize. Defaults to the current directory.")
 	rootCmd.Flags().StringArrayVarP(&intermediatesList, "intermediate", "i", []string{}, "Names of go modules to put between openshift and module to organize. Example usage: -i github.com/thirdy/one -i thirdy.io/two")
@@ -161,9 +161,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".openshift-goimports" (without extension).
+		// Search config in home directory with name ".aimports" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".openshift-goimports")
+		viper.SetConfigName(".aimports")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

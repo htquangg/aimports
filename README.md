@@ -1,5 +1,5 @@
 
-# openshift-goimports
+# aimports
 Organizes Go imports according to OpenShift best practices
 
 * [Summary](#summary)
@@ -55,16 +55,16 @@ import (
 ## <a name='Installation'></a>Installation
 ```
 # Install using go get
-$ go get -u github.com/openshift-eng/openshift-goimports
+$ go get -u github.com/htquangg/aimports
 ```
 
 ## <a name='Usage'></a>Usage
 ```
 Usage:
-  openshift-goimports [flags]
+  aimports [flags]
 
 Flags:
-  -h, --help                             help for openshift-goimports
+  -h, --help                             help for aimports
   -i, --intermediate stringArray         Names of go modules to put between openshift and module to organize. Example usage: -i github.com/thirdy/one -i thirdy.io/two
   -l, --list                             List files whose imports are not sorted without making changes
   -m, --module string                    The name of the go module. Example: github.com/example-org/example-repo (optional)
@@ -88,18 +88,18 @@ An import whose path matches no other group's pattern is put in the standard gro
 ## <a name='Examples'></a>Examples
 
 ### <a name='ExampleCLIusage'></a>Example CLI usage
-*`openshift-goimports` will try to automatically determine the module using the `go.mod` file, if present, at the provided path location.*
+*`aimports` will try to automatically determine the module using the `go.mod` file, if present, at the provided path location.*
 
 ```
 # Basic usage, command executed against current directory
-$ openshift-goimports
+$ aimports
 
 # Basic usage with command executed in provided directory
-$ openshift-goimports --module github.com/example-org/example-repo --path ~/go/src/example-org/example-repo
+$ aimports --module github.com/example-org/example-repo --path ~/go/src/example-org/example-repo
 ```
 
 ### <a name='Examplehacktools.gofile'></a>Example hack/tools.go file
-This file will ensure that the `github.com/openshift-eng/openshift-goimports` repo is vendored into your project.
+This file will ensure that the `github.com/htquangg/aimports` repo is vendored into your project.
 ```
 //go:build tools
 // +build tools
@@ -108,7 +108,7 @@ package hack
 
 // Add tools that hack scripts depend on here, to ensure they are vendored.
 import (
-	_ "github.com/openshift-eng/openshift-goimports"
+	_ "github.com/htquangg/aimports"
 )
 
 ```
@@ -118,9 +118,9 @@ This file will check if there are any go files that need to be formatted. If the
 ```
 #!/bin/bash
 
-bad_files=$(go run ./vendor/github.com/openshift-eng/openshift-goimports -m github.com/example/example-repo -l)
+bad_files=$(go run ./vendor/github.com/htquangg/aimports -m github.com/example/example-repo -l)
 if [[ -n "${bad_files}" ]]; then
-        echo "!!! openshift-goimports needs to be run on the following files:"
+        echo "!!! aimports needs to be run on the following files:"
         echo "${bad_files}"
         echo "Try running 'make imports'"
         exit 1
@@ -129,8 +129,8 @@ fi
 
 ### <a name='ExampleMakefilesections'></a>Example Makefile sections
 ```
-imports: ## Organize imports in go files using openshift-goimports. Example: make imports
-	go run ./vendor/github.com/openshift-eng/openshift-goimports/ -m github.com/example/example-repo
+imports: ## Organize imports in go files using aimports. Example: make imports
+	go run ./vendor/github.com/htquangg/aimports/ -m github.com/example/example-repo
 .PHONY: imports
 
 verify-imports: ## Run import verifications. Example: make verify-imports
